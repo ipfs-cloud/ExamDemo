@@ -109,7 +109,7 @@ public class Schedule {
         // TODO 方法未实现
     	if(threshold < 0)
     		return ReturnCodeKeys.E002;
-    	if(blockTask.size() > 0){
+    	while(blockTask.size() > 0){
     		int nodeId = getMinConsumptionSerer();
     		Task temp = blockTask.poll();
     		TaskInfo taskInfo = new TaskInfo();
@@ -119,7 +119,26 @@ public class Schedule {
     		int totalConsumption = serverConsumption.get(nodeIdFace) + temp.getConsumption();
     		serverConsumption.put(nodeIdFace, totalConsumption);
     	}
+    	if(getMaxThreshold() > threshold){
+    			
+    		
+    	}
         return ReturnCodeKeys.E013;
+    }
+    private int getMaxThreshold(){
+    	Collections.sort(server);
+    	int minConsumption = serverConsumption.get(server.get(0));
+    	int maxConsumption = serverConsumption.get(server.get(0));
+    	for(int i=1; i<server.size(); i++){
+    		int temp = serverConsumption.get(new Integer(server.get(i)));
+    		if(temp < minConsumption){
+    			minConsumption = temp;
+    		}
+    		if(temp > maxConsumption){
+    			maxConsumption = temp;
+    		}
+    	}
+    	return maxConsumption - minConsumption;
     }
 
     private int getMinConsumptionSerer(){
